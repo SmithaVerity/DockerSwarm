@@ -3,7 +3,7 @@ services:
   web:
     #pull the image which we uploaded to the registry
     # replace username/repo:tag with your name and image details
-    image: umangsaltuniv/tutorial:firstversion
+    image: cloudfundtest/tutorial:firstversion
     deploy:
       replicas: 5 #run 5 instances of that image
       resources:
@@ -16,5 +16,16 @@ services:
       - "4000:80" #map port 4000 on the host to web ports 80
     networks:
       - webnet
+  redis:
+    image: redis:latest
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    networks:
+      - webnet
 networks: #using default values
   webnet: #using default values
+ 
